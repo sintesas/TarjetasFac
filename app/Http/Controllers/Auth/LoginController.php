@@ -22,8 +22,6 @@ class LoginController extends Controller
             //$usuario = Usuario::where('usuario',$p_usuario)->first();
             $usuario = Auth::user();
 
-            Log::info($usuario);
-
             $m_menu = new Menu;
             $m_usuariomenu = new UsuarioMenu;
 

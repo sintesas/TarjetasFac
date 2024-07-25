@@ -31,9 +31,6 @@ class Unidades extends Model
         if ($evento == 'C') {
             $Unidad = new Unidades();
             $Unidad->nombre_unidad = $request->get('nombre_unidad');
-            $Unidad->denominacion = $request->get('denominacion');
-            $Unidad->ciudad = $request->get('ciudad');
-            $Unidad->direccion = $request->get('direccion');
             $Unidad->unidad_padre_id = $request->get('unidad_padre_id');
             $Unidad->activo = 1;
             $Unidad->usuario_creador = $request->get('usuario');
@@ -45,9 +42,6 @@ class Unidades extends Model
         else if ($evento == 'U') {
             $Unidad = Unidades::find($request->get('unidad_id'));
             $Unidad->nombre_unidad = $request->get('nombre_unidad');
-            $Unidad->denominacion = $request->get('denominacion');
-            $Unidad->ciudad = $request->get('ciudad');
-            $Unidad->direccion = $request->get('direccion');
             $Unidad->unidad_padre_id = $request->get('unidad_padre_id');
             $Unidad->activo = $request->get('activo');
             $Unidad->usuario_modificador = $request->get('usuario');
@@ -56,5 +50,15 @@ class Unidades extends Model
 
             return $Unidad;
         }
+    }
+
+    public function GetUnidad(Request $request) {
+        $db = DB::select('select * from tb_unidades where unidad_padre_id is null and nombre_unidad=:nombre', array('nombre' => $request->get('nombre')));
+        return $db;
+    }
+
+    public function GetDependencia(Request $request){
+        $db = DB::select('select * from tb_unidades where unidad_padre_id is not null and nombre_unidad=:nombre', array('nombre' => $request->get('nombre')));
+        return $db;
     }
 }

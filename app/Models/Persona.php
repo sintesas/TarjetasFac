@@ -25,6 +25,7 @@ class Persona extends Model
             $persona->unidad = $request->get('unidad') == 0 ? null : $request->get('unidad');
             $persona->dependencia = $request->get('dependencia') == 0 ? null : $request->get('dependencia');
             $persona->cargo = $request->get('cargo');
+            $persona->usuario_da = $request->get('usuario_da') == "" ? null : $request->get('usuario_da');
             $persona->usuario_creador = $request->get('usuario');
             $persona->fecha_creacion = DB::raw('GETDATE()');
 

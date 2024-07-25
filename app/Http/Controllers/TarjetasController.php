@@ -124,49 +124,81 @@ class TarjetasController extends Controller
             return $response;
         }
         else {
-            $image_url = $path . $datos->nombrefoto;
-            $ch = curl_init();
-            
-            // Set cURL options
-            curl_setopt($ch, CURLOPT_URL, $image_url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_FAILONERROR, true);
-            
-            // Execute cURL session
-            $image_data = curl_exec($ch);
-            
-            // Check for errors
-            if (curl_errno($ch)) {
-                curl_close($ch);
-                // return response()->json(['error' => 'Failed to fetch image: ' . curl_error($ch)], 500);
+            if ($datos->nombrefoto == null) {
                 $filename = public_path() . '\\img\\noimage.jpg';
                 $file = \File::get($filename);
                 $mime = \File::mimeType($filename);
-            
+                
                 $response = \Response::make($file, 200);
                 $response->header("Content-Type", $mime);
-            }
-
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if ($http_code == 404) {
-                curl_close($ch);
-                $filename = public_path() . '\\img\\noimage.jpg';
-                $file = \File::get($filename);
-                $mime = \File::mimeType($filename);
-            
-                $response = \Response::make($file, 200);
-                $response->header("Content-Type", $mime);
-
+                
                 return $response;
             }
-            
-            // Get content type of the image
-            $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-            
-            // Close cURL session
-            curl_close($ch);
+            else {
+                $image_url = $path . $datos->nombrefoto;
+                $ch = curl_init();
+                
+                // Set cURL options
+                curl_setopt($ch, CURLOPT_URL, $image_url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_FAILONERROR, true);
+                
+                // Execute cURL session
+                $image_data = curl_exec($ch);
+                
+                // Check for errors
+                if (curl_errno($ch)) {
+                    curl_close($ch);
+                    // return response()->json(['error' => 'Failed to fetch image: ' . curl_error($ch)], 500);
+                    $filename = public_path() . '\\img\\noimage.jpg';
+                    $file = \File::get($filename);
+                    $mime = \File::mimeType($filename);
+                
+                    $response = \Response::make($file, 200);
+                    $response->header("Content-Type", $mime);
+                }
 
-            return \Response::make($image_data, 200, ['Content-Type' => $content_type,]);
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if ($http_code == 404) {
+                    curl_close($ch);
+                    $filename = public_path() . '\\img\\noimage.jpg';
+                    $file = \File::get($filename);
+                    $mime = \File::mimeType($filename);
+                
+                    $response = \Response::make($file, 200);
+                    $response->header("Content-Type", $mime);
+
+                    return $response;
+                }
+                
+                // Get content type of the image
+                $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+                
+                // Close cURL session
+                curl_close($ch);
+
+                return \Response::make($image_data, 200, ['Content-Type' => $content_type,]);
+            }
         }
+    }
+
+    public function obtenerDatosView(Request $request) {
+        $datos = DB::table('tbl_vw_siath_full')->where('identificacion', $request->get('identificacion'))->first();
+
+        $response = json_encode(array('result' => $datos, 'tipo' => 0), JSON_NUMERIC_CHECK);
+        $response = json_decode($response);
+
+        return response()->json($response, 200);
+    }
+
+    public function obtenerUsuarioDA(Request $request) {
+        $db = DB::select('select usuario_da from tb_reg_usuarios_da where identificacion = :identificacion',
+                            [ 'identificacion' => $request->get('identificacion')]);
+        $datos = collect($db)->first();
+
+        $response = json_encode(array('result' => $datos, 'tipo' => 0), JSON_NUMERIC_CHECK);
+        $response = json_decode($response);
+
+        return response()->json($response, 200);
     }
 }

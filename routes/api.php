@@ -62,6 +62,8 @@ Route::group(['prefix' => 'param'], function() {
     Route::post('unidad/crearunidad', [UnidadesController::class, 'CrearUnidades']);
     Route::post('unidad/actualizarunidad', [UnidadesController::class, 'actualizarUnidad']);
     Route::post('unidad/obtenerunidadesByid', [UnidadesController::class, 'get_unidad_by_id']);
+    Route::post('unidad/obtenerunidad', [UnidadesController::class, 'GetUnidad']);
+    Route::post('unidad/obtenerDependencia', [UnidadesController::class, 'GetDependencia']);
 
     //Listas Dinamicas
     Route::get('listas', [ListaController::class,'getListas']);
@@ -73,6 +75,7 @@ Route::group(['prefix' => 'param'], function() {
     Route::post('lista/crearListaDetalle', [ListaController::class, 'crearListaDetalle']);
     Route::post('lista/actualizarListaDetalle', [ListaController::class, 'actualizarListaDetalle']);
     Route::post('lista/getListasByName', [ListaController::class, 'getListasName']);
+    Route::post('lista/getLista', [ListaController::class, 'getListaByIdyValor']);
 });
 
 Route::get('tarjetas',[TarjetasController::class,'GetTarjetas']);
@@ -81,6 +84,8 @@ Route::post('tarjetas/crearTarjetas', [TarjetasController::class, 'CrearTarjetas
 Route::post('tarjetas/actualizarTarjetas', [TarjetasController::class, 'actualizarTarjeta']);
 Route::post('tarjetas/obtenerTarjetas', [TarjetasController::class, 'GetTarjetasByPersonaID']);
 Route::get('tarjetas/buscarImagen', [TarjetasController::class, 'buscarImagen']);
+Route::post('tarjetas/obtenerDatosView', [TarjetasController::class, 'obtenerDatosView']);
+Route::post('tarjetas/obtenerUsuarioDA', [TarjetasController::class, 'obtenerUsuarioDA']);
 
 // Route::get('hello', function() {
 //     $password = password_hash('0000', PASSWORD_BCRYPT, ['cost' => 15]);

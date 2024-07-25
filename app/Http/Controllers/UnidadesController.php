@@ -63,4 +63,26 @@ class UnidadesController extends Controller
             return response()->json($response);
         }
     }
+
+    public function GetUnidad(Request $request) {
+        $model = new Unidades();
+
+        $datos = $model->GetUnidad($request);
+
+        $response = json_encode(array('result' => $datos, 'tipo' => 0), JSON_NUMERIC_CHECK);
+        $response = json_decode($response);
+
+        return response()->json($response, 200);
+    }
+
+    public function GetDependencia(Request $request) {
+        $model = new Unidades();
+
+        $datos = $model->GetDependencia($request);
+
+        $response = json_encode(array('result' => $datos, 'tipo' => 0), JSON_NUMERIC_CHECK);
+        $response = json_decode($response);
+
+        return response()->json($response, 200);
+    }
 }

@@ -24,7 +24,8 @@ class PersonaController extends Controller
         p.fecha_creacion,
         p.usuario_modificador,
         p.fecha_modificacion,
-        p.tipo_persona 
+        p.tipo_persona,
+        p.usuario_da
     from tb_personas p;");
 
         $response = json_encode(array('result' => $datos, 'tipo' => 0), JSON_NUMERIC_CHECK);

@@ -67,4 +67,12 @@ class ListaDetalle extends Model
         
         return $db;
     }
+
+    public function GetLista(Request $request) {
+        $id = $request->input('id');
+        $nombre = $request->input('nombre');
+        $db = DB::select('select * from tb_listas_dinamicas where nombre_lista_id = :id and lista_dinamica = :nombre', ['id' => $id, 'nombre' => $nombre]);
+        
+        return $db;
+    }
 }
